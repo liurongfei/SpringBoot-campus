@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jxnu.rj.lrf.dao.NoticeMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.entity.Notice">
+    <id column="notice_id" jdbcType="INTEGER" property="noticeId" />
+    <result column="user_id1" jdbcType="INTEGER" property="userId1" />
+    <result column="user_id2" jdbcType="INTEGER" property="userId2" />
+    <result column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="notice_content" jdbcType="VARCHAR" property="noticeContent" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="notice_linkId" jdbcType="INTEGER" property="noticeLinkid" />
+    <result column="notice_linkType" jdbcType="INTEGER" property="noticeLinktype" />
+    <result column="notice_read" jdbcType="INTEGER" property="noticeRead" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    notice_id, user_id1, user_id2, notice_type, notice_content, gmt_create, notice_linkId, 
+    notice_linkType, notice_read
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from campus_notice
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from campus_notice
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.jxnu.rj.lrf.entity.Notice">
+    insert into campus_notice (notice_id, user_id1, user_id2, 
+      notice_type, notice_content, gmt_create, 
+      notice_linkId, notice_linkType, notice_read
+      )
+    values (#{noticeId,jdbcType=INTEGER}, #{userId1,jdbcType=INTEGER}, #{userId2,jdbcType=INTEGER}, 
+      #{noticeType,jdbcType=INTEGER}, #{noticeContent,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{noticeLinkid,jdbcType=INTEGER}, #{noticeLinktype,jdbcType=INTEGER}, #{noticeRead,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Notice">
+    insert into campus_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+      <if test="userId1 != null">
+        user_id1,
+      </if>
+      <if test="userId2 != null">
+        user_id2,
+      </if>
+      <if test="noticeType != null">
+        notice_type,
+      </if>
+      <if test="noticeContent != null">
+        notice_content,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="noticeLinkid != null">
+        notice_linkId,
+      </if>
+      <if test="noticeLinktype != null">
+        notice_linkType,
+      </if>
+      <if test="noticeRead != null">
+        notice_read,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId1 != null">
+        #{userId1,jdbcType=INTEGER},
+      </if>
+      <if test="userId2 != null">
+        #{userId2,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="noticeContent != null">
+        #{noticeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeLinkid != null">
+        #{noticeLinkid,jdbcType=INTEGER},
+      </if>
+      <if test="noticeLinktype != null">
+        #{noticeLinktype,jdbcType=INTEGER},
+      </if>
+      <if test="noticeRead != null">
+        #{noticeRead,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Notice">
+    update campus_notice
+    <set>
+      <if test="userId1 != null">
+        user_id1 = #{userId1,jdbcType=INTEGER},
+      </if>
+      <if test="userId2 != null">
+        user_id2 = #{userId2,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        notice_type = #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="noticeContent != null">
+        notice_content = #{noticeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeLinkid != null">
+        notice_linkId = #{noticeLinkid,jdbcType=INTEGER},
+      </if>
+      <if test="noticeLinktype != null">
+        notice_linkType = #{noticeLinktype,jdbcType=INTEGER},
+      </if>
+      <if test="noticeRead != null">
+        notice_read = #{noticeRead,jdbcType=INTEGER},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.Notice">
+    update campus_notice
+    set user_id1 = #{userId1,jdbcType=INTEGER},
+      user_id2 = #{userId2,jdbcType=INTEGER},
+      notice_type = #{noticeType,jdbcType=INTEGER},
+      notice_content = #{noticeContent,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      notice_linkId = #{noticeLinkid,jdbcType=INTEGER},
+      notice_linkType = #{noticeLinktype,jdbcType=INTEGER},
+      notice_read = #{noticeRead,jdbcType=INTEGER}
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </update>
+</mapper>

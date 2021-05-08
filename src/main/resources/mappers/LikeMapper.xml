@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jxnu.rj.lrf.dao.LikeMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.entity.Like">
+    <id column="work_id" jdbcType="INTEGER" property="workId" />
+    <id column="work_type" jdbcType="INTEGER" property="workType" />
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="isLike" jdbcType="BIT" property="islike" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    work_id, work_type, user_id, gmt_create, gmt_modified, isLike
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.LikeKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from campus_like
+    where work_id = #{workId,jdbcType=INTEGER}
+      and work_type = #{workType,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.LikeKey">
+    delete from campus_like
+    where work_id = #{workId,jdbcType=INTEGER}
+      and work_type = #{workType,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.jxnu.rj.lrf.entity.Like">
+    insert into campus_like (work_id, work_type, user_id, 
+      gmt_create, gmt_modified, isLike
+      )
+    values (#{workId,jdbcType=INTEGER}, #{workType,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{islike,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Like">
+    insert into campus_like
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="workId != null">
+        work_id,
+      </if>
+      <if test="workType != null">
+        work_type,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="islike != null">
+        isLike,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="workId != null">
+        #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="workType != null">
+        #{workType,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="islike != null">
+        #{islike,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Like">
+    update campus_like
+    <set>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="islike != null">
+        isLike = #{islike,jdbcType=BIT},
+      </if>
+    </set>
+    where work_id = #{workId,jdbcType=INTEGER}
+      and work_type = #{workType,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.Like">
+    update campus_like
+    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      isLike = #{islike,jdbcType=BIT}
+    where work_id = #{workId,jdbcType=INTEGER}
+      and work_type = #{workType,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

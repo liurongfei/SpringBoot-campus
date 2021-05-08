@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jxnu.rj.lrf.dao.MomentsMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.dto.MomentsDto">
+    <id column="moment_id" jdbcType="INTEGER" property="momentId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_image" jdbcType="VARCHAR" property="userImage"/>
+    <result column="user_school" jdbcType="VARCHAR" property="userSchool" />
+    <result column="moment_content" jdbcType="VARCHAR" property="momentContent" />
+    <result column="moment_status" jdbcType="INTEGER" property="momentStatus" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    moment_id, user_id, user_name,user_image,user_school,moment_content, moment_status, gmt_create
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from campus_moments left join campus_user on campus_moments.user_id = campus_user.user_id
+    where moment_id = #{momentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from campus_moments
+    where moment_id = #{momentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.jxnu.rj.lrf.entity.Moments">
+    insert into campus_moments (moment_id, user_id, moment_content, 
+      moment_status, gmt_create)
+    values (#{momentId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{momentContent,jdbcType=VARCHAR}, 
+      #{momentStatus,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Moments">
+    insert into campus_moments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="momentId != null">
+        moment_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="momentContent != null">
+        moment_content,
+      </if>
+      <if test="momentStatus != null">
+        moment_status,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="momentId != null">
+        #{momentId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="momentContent != null">
+        #{momentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="momentStatus != null">
+        #{momentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Moments">
+    update campus_moments
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="momentContent != null">
+        moment_content = #{momentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="momentStatus != null">
+        moment_status = #{momentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where moment_id = #{momentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.Moments">
+    update campus_moments
+    set user_id = #{userId,jdbcType=INTEGER},
+      moment_content = #{momentContent,jdbcType=VARCHAR},
+      moment_status = #{momentStatus,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where moment_id = #{momentId,jdbcType=INTEGER}
+  </update>
+</mapper>

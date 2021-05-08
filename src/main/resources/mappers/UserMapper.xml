@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jxnu.rj.lrf.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.entity.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="CHAR" property="userPhone" />
+    <result column="user_gender" jdbcType="INTEGER" property="userGender" />
+    <result column="user_birthday" jdbcType="DATE" property="userBirthday" />
+    <result column="user_age" jdbcType="INTEGER" property="userAge" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="user_province" jdbcType="VARCHAR" property="userProvince" />
+    <result column="user_city" jdbcType="VARCHAR" property="userCity" />
+    <result column="user_emotion_status" jdbcType="INTEGER" property="userEmotionStatus" />
+    <result column="user_match_status" jdbcType="INTEGER" property="userMatchStatus" />
+    <result column="user_signature" jdbcType="VARCHAR" property="userSignature" />
+    <result column="user_realname" jdbcType="VARCHAR" property="userRealname" />
+    <result column="user_school" jdbcType="VARCHAR" property="userSchool" />
+    <result column="user_dept" jdbcType="VARCHAR" property="userDept" />
+    <result column="user_major" jdbcType="VARCHAR" property="userMajor" />
+    <result column="user_grade" jdbcType="CHAR" property="userGrade" />
+    <result column="user_image" jdbcType="VARCHAR" property="userImage" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, user_name, user_phone, user_gender, user_birthday, user_age, user_password, 
+    user_province, user_city, user_emotion_status, user_match_status, user_signature, 
+    user_realname, user_school, user_dept, user_major, user_grade, user_image, gmt_create
+  </sql>
+  <sql id="userView_list">
+    user_id,user_name,user_image,user_school
+  </sql>
+  <sql id="userInfo_list">
+    user_id, user_name, user_gender, user_age,
+    user_province, user_city, user_emotion_status,
+    user_signature, user_school, user_dept,
+     user_major, user_grade, user_image
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="userInfo_list" />
+    from campus_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectForLogin" resultMap="BaseResultMap">
+    select user_id,user_phone,user_password
+    from campus_user
+    where user_phone = #{userPhone,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByName" resultType="cn.edu.jxnu.rj.lrf.dto.UserViewDto">
+    <bind name="pattern" value="'%'+ name + '%'" />
+    select
+    <include refid="userView_list" />
+    from campus_user
+    where name like #{pattern} and user_id > #{lastUserId}
+    order by user_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from campus_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.jxnu.rj.lrf.entity.User">
+    insert into campus_user (user_id, user_name, user_phone, 
+      user_gender, user_birthday, user_age, 
+      user_password, user_province, user_city, 
+      user_emotion_status, user_match_status, user_signature, 
+      user_realname, user_school, user_dept, 
+      user_major, user_grade, user_image, 
+      gmt_create)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPhone,jdbcType=CHAR}, 
+      #{userGender,jdbcType=INTEGER}, #{userBirthday,jdbcType=DATE}, #{userAge,jdbcType=INTEGER}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userProvince,jdbcType=VARCHAR}, #{userCity,jdbcType=VARCHAR}, 
+      #{userEmotionStatus,jdbcType=INTEGER}, #{userMatchStatus,jdbcType=INTEGER}, #{userSignature,jdbcType=VARCHAR}, 
+      #{userRealname,jdbcType=VARCHAR}, #{userSchool,jdbcType=VARCHAR}, #{userDept,jdbcType=VARCHAR}, 
+      #{userMajor,jdbcType=VARCHAR}, #{userGrade,jdbcType=CHAR}, #{userImage,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.User">
+    insert into campus_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="userGender != null">
+        user_gender,
+      </if>
+      <if test="userBirthday != null">
+        user_birthday,
+      </if>
+      <if test="userAge != null">
+        user_age,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userProvince != null">
+        user_province,
+      </if>
+      <if test="userCity != null">
+        user_city,
+      </if>
+      <if test="userEmotionStatus != null">
+        user_emotion_status,
+      </if>
+      <if test="userMatchStatus != null">
+        user_match_status,
+      </if>
+      <if test="userSignature != null">
+        user_signature,
+      </if>
+      <if test="userRealname != null">
+        user_realname,
+      </if>
+      <if test="userSchool != null">
+        user_school,
+      </if>
+      <if test="userDept != null">
+        user_dept,
+      </if>
+      <if test="userMajor != null">
+        user_major,
+      </if>
+      <if test="userGrade != null">
+        user_grade,
+      </if>
+      <if test="userImage != null">
+        user_image,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=CHAR},
+      </if>
+      <if test="userGender != null">
+        #{userGender,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null">
+        #{userBirthday,jdbcType=DATE},
+      </if>
+      <if test="userAge != null">
+        #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userProvince != null">
+        #{userProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null">
+        #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmotionStatus != null">
+        #{userEmotionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userMatchStatus != null">
+        #{userMatchStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userSignature != null">
+        #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealname != null">
+        #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSchool != null">
+        #{userSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="userDept != null">
+        #{userDept,jdbcType=VARCHAR},
+      </if>
+      <if test="userMajor != null">
+        #{userMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null">
+        #{userGrade,jdbcType=CHAR},
+      </if>
+      <if test="userImage != null">
+        #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.jxnu.rj.lrf.entity.User">
+    update campus_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=CHAR},
+      </if>
+      <if test="userGender != null">
+        user_gender = #{userGender,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null">
+        user_birthday = #{userBirthday,jdbcType=DATE},
+      </if>
+      <if test="userAge != null">
+        user_age = #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userProvince != null">
+        user_province = #{userProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null">
+        user_city = #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmotionStatus != null">
+        user_emotion_status = #{userEmotionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userMatchStatus != null">
+        user_match_status = #{userMatchStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userSignature != null">
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealname != null">
+        user_realname = #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSchool != null">
+        user_school = #{userSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="userDept != null">
+        user_dept = #{userDept,jdbcType=VARCHAR},
+      </if>
+      <if test="userMajor != null">
+        user_major = #{userMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null">
+        user_grade = #{userGrade,jdbcType=CHAR},
+      </if>
+      <if test="userImage != null">
+        user_image = #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.User">
+    update campus_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=CHAR},
+      user_gender = #{userGender,jdbcType=INTEGER},
+      user_birthday = #{userBirthday,jdbcType=DATE},
+      user_age = #{userAge,jdbcType=INTEGER},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_province = #{userProvince,jdbcType=VARCHAR},
+      user_city = #{userCity,jdbcType=VARCHAR},
+      user_emotion_status = #{userEmotionStatus,jdbcType=INTEGER},
+      user_match_status = #{userMatchStatus,jdbcType=INTEGER},
+      user_signature = #{userSignature,jdbcType=VARCHAR},
+      user_realname = #{userRealname,jdbcType=VARCHAR},
+      user_school = #{userSchool,jdbcType=VARCHAR},
+      user_dept = #{userDept,jdbcType=VARCHAR},
+      user_major = #{userMajor,jdbcType=VARCHAR},
+      user_grade = #{userGrade,jdbcType=CHAR},
+      user_image = #{userImage,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>
