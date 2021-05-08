@@ -87,13 +87,13 @@ public class UserController implements ErrorCode {
      * @author lrf
      * @description //TODO 用户注销
      * @date 2021/3/30 14:37
-     * @param userId session 用户id
+     * @param request session 用户id
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
     @PostMapping("/logout")
     public ResponseModel logout(HttpServletRequest request){
 //        session.invalidate();
-        String token = request.getHeader("Authorization")
+        String token = request.getHeader("Authorization");
         if(StringUtils.isNotEmpty(token)){
             redisTemplate.delete(token);
         }
