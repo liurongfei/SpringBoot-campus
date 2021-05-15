@@ -1,13 +1,21 @@
 package cn.edu.jxnu.rj.lrf.controller;
 
 import cn.edu.jxnu.rj.lrf.common.BusinessException;
-import cn.edu.jxnu.rj.lrf.common.ErrorCode;
+import cn.edu.jxnu.rj.lrf.common.ErrorCodeEnum;
 import cn.edu.jxnu.rj.lrf.common.ResponseModel;
-import cn.edu.jxnu.rj.lrf.util.Util;
 import cn.edu.jxnu.rj.lrf.entity.User;
 import cn.edu.jxnu.rj.lrf.service.UserService;
+import cn.edu.jxnu.rj.lrf.util.Util;
 import com.google.code.kaptcha.Constants;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController implements ErrorCode {
+public class UserController{
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
@@ -43,13 +52,16 @@ public class UserController implements ErrorCode {
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
     @PostMapping("/register")
-    public ResponseModel register(String code, User user, HttpSession session){
-        String c = session.getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
-        if(!StringUtils.equals(c,code)){
-            throw new BusinessException(PARAMETER_ERROR,"验证码不正确");
+    public ResponseModel register(String code, User user, HttpServletRequest request){
+        String c = null;
+        try {
+            c = request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
+        } catch (NullPointerException e) {
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"请获取验证码");
         }
-        user.setUserPassword(Util.md5(user.getUserPassword()));
-
+        if(!StringUtils.equals(c,code)){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"验证码不正确");
+        }
         userService.register(user);
 
         return new ResponseModel();
@@ -66,49 +78,50 @@ public class UserController implements ErrorCode {
     public ResponseModel login(String code, String userPhone, String userPassword, HttpServletRequest request, HttpServletResponse response){
         String c = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
         if(!StringUtils.equals(c,code)){
-            throw new BusinessException(PARAMETER_ERROR,"验证码不正确");
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"验证码不正确");
         }
         if(StringUtils.isEmpty(userPhone) || StringUtils.isEmpty(userPassword)){
-            throw new BusinessException(PARAMETER_ERROR,"参数不合法");
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数不合法");
         }
 
-        String md5 = Util.md5(userPassword);
-        logger.info(md5);
-        System.out.println(md5);
-        User user = userService.login(userPhone, md5);
+        //获取主体对象
+        Subject subject = SecurityUtils.getSubject();
+        subject.login(new UsernamePasswordToken(userPhone,userPassword));
+
+        User user = (User)subject.getPrincipal();
         int id = user.getUserId();
-        String token = Util.createToken(id+"");
+//        String token = Util.createToken(id+"");//使用JWT
+        String token = UUID.randomUUID().toString().replace("-","");
         redisTemplate.opsForValue().set(token,user,1, TimeUnit.DAYS);//token保存1天
 
-        return new ResponseModel(token);
+        return new ResponseModel("token");
     }
 
     /**
      * @author lrf
      * @description //TODO 用户注销
      * @date 2021/3/30 14:37
-     * @param request session 用户id
+     * @param request 从请求头中获取token
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
     @PostMapping("/logout")
     public ResponseModel logout(HttpServletRequest request){
-//        session.invalidate();
         String token = request.getHeader("Authorization");
         if(StringUtils.isNotEmpty(token)){
             redisTemplate.delete(token);
         }
+        SecurityUtils.getSubject().logout();
         return new ResponseModel();
     }
 
     /**
      * @author lrf
-     * @description //TODO
+     * @description //TODO 获取用户信息
      * @date 2021/4/16 21:09
-     * @param
+     * @param request 从请求头中获取token,根据token获取用户信息
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping(path = "/status", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("/status")
     public ResponseModel getUser(HttpServletRequest request) {
         String token = request.getHeader("authorization");
         User user =null;
@@ -116,5 +129,14 @@ public class UserController implements ErrorCode {
             user = (User) redisTemplate.opsForValue().get(token);
         }
         return new ResponseModel(user);
+    }
+
+    @GetMapping("/getAll")
+    @RequiresRoles("admin")
+    @RequiresPermissions("user:*")
+    public ResponseModel getAll(){
+        List<User> list = userService.getALl();
+
+        return new ResponseModel(list);
     }
 }

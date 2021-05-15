@@ -1,7 +1,7 @@
 package cn.edu.jxnu.rj.lrf.util;
 
 import cn.edu.jxnu.rj.lrf.common.BusinessException;
-import cn.edu.jxnu.rj.lrf.common.ErrorCode;
+import cn.edu.jxnu.rj.lrf.common.ErrorCodeEnum;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
@@ -14,8 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-public class Util implements ErrorCode {
+public class Util{
 
     private static final String salt = "从校园社交项目中你学会了什么";
 
@@ -26,14 +27,6 @@ public class Util implements ErrorCode {
     //token秘钥
     private static final String TOKEN_SECRET = "ZCfasfhuaUUHufguGuwu2020BQWE";
 
-
-    public static String md5(String str) {
-        if (StringUtils.isEmpty(str)) {
-            throw new BusinessException(PARAMETER_ERROR, "参数不合法！");
-        }
-
-        return DigestUtils.md5DigestAsHex((str + salt).getBytes());
-    }
 
     public static String format(Date date, String pattern) {
         return new SimpleDateFormat(pattern).format(date);
@@ -93,5 +86,15 @@ public class Util implements ErrorCode {
             }catch (Exception e){
                 return null;
             }
+    }
+
+    public static String getSalt(int length){
+        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <length ; i++) {
+            char c = chars[new Random().nextInt(chars.length)];
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }

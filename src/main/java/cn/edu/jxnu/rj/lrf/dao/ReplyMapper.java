@@ -1,7 +1,9 @@
 package cn.edu.jxnu.rj.lrf.dao;
 
 import cn.edu.jxnu.rj.lrf.entity.Reply;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReplyMapper {
     int deleteByPrimaryKey(Integer replyId);
 

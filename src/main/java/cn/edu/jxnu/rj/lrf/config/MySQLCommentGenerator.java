@@ -68,14 +68,14 @@ public class MySQLCommentGenerator extends EmptyCommentGenerator {
         field.addJavaDocLine(" */");
     }
 
-    public static void main(String[] args) throws IOException, XMLParserException, InvalidConfigurationException, SQLException, InterruptedException, URISyntaxException {
-        List<String> warnings = new ArrayList<>();
-        URL configFileUrl = MySQLCommentGenerator.class.getClassLoader().getResource("mybatis-generator-config.xml");
-        File configFile = new File(configFileUrl.toURI());
-        ConfigurationParser cp = new ConfigurationParser(warnings);
-        Configuration config = cp.parseConfiguration(configFile);
-        DefaultShellCallback callback = new DefaultShellCallback(true);
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
-        myBatisGenerator.generate(null);
-    }
+//    public static void main(String[] args) throws IOException, XMLParserException, InvalidConfigurationException, SQLException, InterruptedException, URISyntaxException {
+//        List<String> warnings = new ArrayList<>();
+//        URL configFileUrl = MySQLCommentGenerator.class.getClassLoader().getResource("mybatis-generator-config.xml");
+//        File configFile = new File(configFileUrl.toURI());
+//        ConfigurationParser cp = new ConfigurationParser(warnings);
+//        Configuration config = cp.parseConfiguration(configFile);
+//        DefaultShellCallback callback = new DefaultShellCallback(true);
+//        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+//        myBatisGenerator.generate(null);
+//    }
 }

@@ -2,7 +2,9 @@ package cn.edu.jxnu.rj.lrf.dao;
 
 import cn.edu.jxnu.rj.lrf.entity.Like;
 import cn.edu.jxnu.rj.lrf.entity.LikeKey;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface LikeMapper {
     int deleteByPrimaryKey(LikeKey key);
 

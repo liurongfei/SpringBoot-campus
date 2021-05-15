@@ -1,7 +1,9 @@
 package cn.edu.jxnu.rj.lrf.dao;
 
 import cn.edu.jxnu.rj.lrf.entity.Notice;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface NoticeMapper {
     int deleteByPrimaryKey(Integer noticeId);
 

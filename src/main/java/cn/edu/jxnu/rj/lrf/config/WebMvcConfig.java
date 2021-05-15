@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @description: 配置拦截器
  * @date: 2021/4/16 15:51
  */
-@Configuration
-public class WebMvcConfiguration implements WebMvcConfigurer {
+//@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

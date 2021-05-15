@@ -21,11 +21,12 @@
     <result column="user_grade" jdbcType="CHAR" property="userGrade" />
     <result column="user_image" jdbcType="VARCHAR" property="userImage" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
   </resultMap>
   <sql id="Base_Column_List">
     user_id, user_name, user_phone, user_gender, user_birthday, user_age, user_password, 
     user_province, user_city, user_emotion_status, user_match_status, user_signature, 
-    user_realname, user_school, user_dept, user_major, user_grade, user_image, gmt_create
+    user_realname, user_school, user_dept, user_major, user_grade, user_image, gmt_create,salt
   </sql>
   <sql id="userView_list">
     user_id,user_name,user_image,user_school
@@ -44,7 +45,8 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <select id="selectForLogin" resultMap="BaseResultMap">
-    select user_id,user_phone,user_password
+    select
+    <include refid="Base_Column_List" />
     from campus_user
     where user_phone = #{userPhone,jdbcType=VARCHAR}
   </select>
@@ -53,8 +55,13 @@
     select
     <include refid="userView_list" />
     from campus_user
-    where name like #{pattern} and user_id > #{lastUserId}
+    where user_name like #{pattern} and user_id > #{lastUserId}
     order by user_id
+  </select>
+  <select id="selectAll" resultType="cn.edu.jxnu.rj.lrf.entity.User">
+    select
+    <include refid="userView_list" />
+    from campus_user
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from campus_user
@@ -67,14 +74,14 @@
       user_emotion_status, user_match_status, user_signature, 
       user_realname, user_school, user_dept, 
       user_major, user_grade, user_image, 
-      gmt_create)
+      gmt_create,salt)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPhone,jdbcType=CHAR}, 
       #{userGender,jdbcType=INTEGER}, #{userBirthday,jdbcType=DATE}, #{userAge,jdbcType=INTEGER}, 
       #{userPassword,jdbcType=VARCHAR}, #{userProvince,jdbcType=VARCHAR}, #{userCity,jdbcType=VARCHAR}, 
       #{userEmotionStatus,jdbcType=INTEGER}, #{userMatchStatus,jdbcType=INTEGER}, #{userSignature,jdbcType=VARCHAR}, 
       #{userRealname,jdbcType=VARCHAR}, #{userSchool,jdbcType=VARCHAR}, #{userDept,jdbcType=VARCHAR}, 
       #{userMajor,jdbcType=VARCHAR}, #{userGrade,jdbcType=CHAR}, #{userImage,jdbcType=VARCHAR}, 
-      #{gmtCreate,jdbcType=TIMESTAMP})
+      #{gmtCreate,jdbcType=TIMESTAMP},#{salt,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.User">
     insert into campus_user
@@ -136,6 +143,9 @@
       <if test="gmtCreate != null">
         gmt_create,
       </if>
+      <if test="salt != null">
+        salt,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -194,6 +204,9 @@
       </if>
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>

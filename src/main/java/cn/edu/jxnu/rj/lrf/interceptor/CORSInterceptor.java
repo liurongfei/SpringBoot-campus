@@ -1,6 +1,5 @@
 package cn.edu.jxnu.rj.lrf.interceptor;
 
-import cn.edu.jxnu.rj.lrf.common.ErrorCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2021/4/16 15:49
  */
 @Component
-public class CORSInterceptor implements HandlerInterceptor, ErrorCode {
+public class CORSInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("cross..."+request.getRequestURI());
