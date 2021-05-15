@@ -1,6 +1,5 @@
-package cn.edu.jxnu.rj.lrf.config;
+package cn.edu.jxnu.rj.lrf.config.shiro;
 
-import cn.edu.jxnu.rj.lrf.security.CustomerRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

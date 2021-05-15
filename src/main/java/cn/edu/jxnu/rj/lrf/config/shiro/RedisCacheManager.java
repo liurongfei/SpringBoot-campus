@@ -1,4 +1,4 @@
-package cn.edu.jxnu.rj.lrf.security;
+package cn.edu.jxnu.rj.lrf.config.shiro;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;

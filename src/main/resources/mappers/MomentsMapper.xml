@@ -4,15 +4,12 @@
   <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.dto.MomentsDto">
     <id column="moment_id" jdbcType="INTEGER" property="momentId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="user_image" jdbcType="VARCHAR" property="userImage"/>
-    <result column="user_school" jdbcType="VARCHAR" property="userSchool" />
     <result column="moment_content" jdbcType="VARCHAR" property="momentContent" />
     <result column="moment_status" jdbcType="INTEGER" property="momentStatus" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
   </resultMap>
   <sql id="Base_Column_List">
-    moment_id, user_id, user_name,user_image,user_school,moment_content, moment_status, gmt_create
+    moment_id, user_id,moment_content, moment_status, gmt_create
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -20,7 +17,13 @@
     from campus_moments left join campus_user on campus_moments.user_id = campus_user.user_id
     where moment_id = #{momentId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByUserId" resultType="cn.edu.jxnu.rj.lrf.entity.Moments">
+      select
+      <include refid="Base_Column_List" />
+      from campus_moments
+      where user_id = #{userId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from campus_moments
     where moment_id = #{momentId,jdbcType=INTEGER}
   </delete>

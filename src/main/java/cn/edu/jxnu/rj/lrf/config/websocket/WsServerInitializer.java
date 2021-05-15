@@ -1,4 +1,4 @@
-package cn.edu.jxnu.rj.lrf.websocket;
+package cn.edu.jxnu.rj.lrf.config.websocket;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

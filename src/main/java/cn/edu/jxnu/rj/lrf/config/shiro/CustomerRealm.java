@@ -1,16 +1,13 @@
-package cn.edu.jxnu.rj.lrf.security;
+package cn.edu.jxnu.rj.lrf.config.shiro;
 
 import cn.edu.jxnu.rj.lrf.entity.User;
 import cn.edu.jxnu.rj.lrf.service.UserService;
-import cn.edu.jxnu.rj.lrf.util.Util;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
