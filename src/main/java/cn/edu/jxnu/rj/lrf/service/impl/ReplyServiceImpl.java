@@ -44,8 +44,7 @@ public class ReplyServiceImpl implements ReplyService{
      **/
     @Override
     public List<Reply> getAllInComment(int commentId) {
-
         System.out.println(replyMapper.selectByPrimaryKey(commentId));
-       return (List<Reply>) replyMapper.selectByPrimaryKey(commentId);
+       return  replyMapper.selectByCommentId(commentId);
     }
 }

@@ -16,6 +16,12 @@
     select 
     <include refid="Base_Column_List" />
     from campus_reply
+    where reply_id = #{replyId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCommentId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from campus_reply
     where comment_id = #{commentId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
