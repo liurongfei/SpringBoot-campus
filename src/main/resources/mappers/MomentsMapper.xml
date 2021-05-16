@@ -14,7 +14,7 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from campus_moments left join campus_user on campus_moments.user_id = campus_user.user_id
+    from campus_moments
     where moment_id = #{momentId,jdbcType=INTEGER}
   </select>
     <select id="selectByUserId" resultType="cn.edu.jxnu.rj.lrf.entity.Moments">
