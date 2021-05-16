@@ -1,8 +1,12 @@
 package cn.edu.jxnu.rj.lrf.controller;
 
+import cn.edu.jxnu.rj.lrf.common.BusinessException;
+import cn.edu.jxnu.rj.lrf.common.ErrorCodeEnum;
 import cn.edu.jxnu.rj.lrf.common.ResponseModel;
 import cn.edu.jxnu.rj.lrf.entity.Moments;
 import cn.edu.jxnu.rj.lrf.service.MomentsService;
+import com.alibaba.druid.wall.violation.ErrorCode;
+import org.apache.tomcat.jni.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,5 +55,30 @@ public class MomentController {
         List<Moments> list = momentsService.getAllByUserId(userId);
         return new ResponseModel(list);
     }
-
+    /**
+     * @Description //TODO  通过momentId删除单条动态
+     * @Param [momentId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @RequestMapping("/deleteByMomentId")
+    public ResponseModel deleteByMomentId(int momentId){
+        if(momentId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
+        momentsService.deleteByMomentId(momentId);
+        return new ResponseModel();
+    }
+    /**
+     * @Description //TODO  通过momentId查找单条动态
+     * @Param [momentId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @RequestMapping("/findById")
+    public ResponseModel findById(int momentId){
+        if(momentId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
+        Moments moments = momentsService.findById(momentId);
+        return new ResponseModel(moments);
+    }
 }

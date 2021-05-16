@@ -24,18 +24,19 @@ public class MomentsServiceImpl implements MomentsService {
 
     }
 
+
     @Override
     public List<Moments> getAllByUserId(int userId) {
         return momentsMapper.selectByUserId(userId);
     }
 
     @Override
-    public void delete(int dynamicId, String path) {
-
+    public void deleteByMomentId(int momentId) {
+        momentsMapper.deleteByPrimaryKey(momentId);
     }
 
     @Override
-    public Moments findById(int dynamicId, int userId) {
-        return null;
+    public Moments findById(int momentId) {
+        return momentsMapper.selectByPrimaryKey(momentId);
     }
 }

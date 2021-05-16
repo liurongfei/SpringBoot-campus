@@ -90,4 +90,10 @@
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+  <select id="selectByCommentId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+        from campus_comment
+        where moment_id = #{momentId,jdbcType=INTEGER}
+  </select>
 </mapper>
