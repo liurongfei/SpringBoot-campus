@@ -31,10 +31,11 @@ public class ShiroConfig {
         map.put("/util","anon");
         map.put("/user/login","anon");
         map.put("/user/register","anon");
+        map.put("/friend/**","anon");
         //受限资源
         map.put("/user/status","authc");
         map.put("/user/logout","authc");
-        map.put("/friend/**","authc");
+
 
         filter.setFilterChainDefinitionMap(map);
         //配置默认认证界面,即无权访问受限资源时会自动跳转这个请求

@@ -2,6 +2,7 @@ package cn.edu.jxnu.rj.lrf.controller;
 
 import cn.edu.jxnu.rj.lrf.common.ResponseModel;
 import cn.edu.jxnu.rj.lrf.dto.FriendDto;
+import cn.edu.jxnu.rj.lrf.service.FriendService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -26,6 +27,9 @@ public class FriendController {
     @Autowired
     RedisTemplate redisTemplate;
 
+    @Autowired
+    FriendService friendService;
+
 
     @RequestMapping("/get/{id}")
     @RequiresRoles("user")
@@ -46,11 +50,9 @@ public class FriendController {
         return new ResponseModel(members);
     }
 
-    @RequestMapping("/follow/{id}")
-    public ResponseModel follow(@PathVariable("id") String id,Integer userId){
-
-        String key = "user:"+userId+":following";
-        redisTemplate.opsForSet().add(key,id);
+    @RequestMapping("/follow/{friendId}")
+    public ResponseModel follow(@PathVariable("friendId") String friendId,Integer userId){
+        friendService.follow(userId.toString(),friendId);
         return new ResponseModel();
     }
 }
