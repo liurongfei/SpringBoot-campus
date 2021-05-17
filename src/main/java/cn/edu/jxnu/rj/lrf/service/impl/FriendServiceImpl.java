@@ -22,22 +22,45 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     UserService userService;
 
+    /**
+     * @Description //TODO  查看好友关系
+     * @Param [userId]
+     * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
+     **/
     @Override
     public Set<User> getFriends(String userId) {
-        return null;
+        String key ="user:"+userId+":follow";
+        Set<User> member =redisTemplate.opsForSet().members(key);
+        return member;
     }
-
+    /**
+     * @Description //TODO  查看关注
+     * @Param [userId]
+     * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
+     **/
     @Override
     public Set<User> getFollows(String userId) {
         String key = "user:"+userId+":follow";
         Set<User> members = redisTemplate.opsForSet().members(key);
         return members;
     }
-
+    /**
+     * @Description //TODO  查看粉丝
+     * @Param [userId]
+     * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
+     **/
     @Override
     public Set<User> getFollowers(String userId) {
-        return null;
+        String key = "user:"+userId+":follow";
+        Set<User> members = redisTemplate.opsForSet().members(key);
+        return members;
     }
+
+    /**
+     * @Description //TODO  存入关注信息
+     * @Param [userId, friendId]
+     * @return void
+     **/
 
     @Override
     public void follow(String userId, String friendId) {
@@ -53,23 +76,48 @@ public class FriendServiceImpl implements FriendService {
         redisTemplate.opsForSet().add(key2,user2);
     }
 
+    /**
+     * @Description //TODO   用户取消关注
+     * @Param [userId, followId]
+     * @return void
+     **/
     @Override
     public void cancelFollow(String userId, String followId) {
+        //先查询需要取消关注的用户信息
+        User user = userService.findById(Integer.parseInt(followId));
+        User user2 = userService.findById(Integer.parseInt(userId));
+
 
     }
 
+    /**
+     * @Description //TODO  被关注者移除关注
+     * @Param [userId, followerId]
+     * @return void
+     **/
     @Override
     public void removeFollowers(String userId, String followerId) {
 
     }
 
+    /**
+     * @Description //TODO  判断两个用户是否，是好友关系
+     * @Param [userId, friendId]
+     * @return boolean
+     **/
     @Override
     public boolean isFriend(String userId, String friendId) {
         return false;
     }
 
+    /**
+     * @Description //TODO  判断两个用户是否,是关注状态
+     * @Param [userId, friendId]
+     * @return boolean
+     **/
     @Override
     public boolean isFollow(String userId, String friendId) {
+
         return false;
     }
 }

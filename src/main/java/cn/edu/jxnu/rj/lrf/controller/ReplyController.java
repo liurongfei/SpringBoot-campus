@@ -1,5 +1,7 @@
 package cn.edu.jxnu.rj.lrf.controller;
 
+import cn.edu.jxnu.rj.lrf.common.BusinessException;
+import cn.edu.jxnu.rj.lrf.common.ErrorCodeEnum;
 import cn.edu.jxnu.rj.lrf.common.ResponseModel;
 import cn.edu.jxnu.rj.lrf.entity.Reply;
 import cn.edu.jxnu.rj.lrf.service.ReplyService;
@@ -28,6 +30,9 @@ public class ReplyController {
      **/
     @RequestMapping("/replyPost")
     public ResponseModel reply(Reply reply){
+        if (reply == null){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         replyService.post(reply);
         return new ResponseModel();
     }
@@ -39,6 +44,9 @@ public class ReplyController {
      **/
     @RequestMapping("/deleteReply")
     public ResponseModel deleteReply(int replyId){
+        if(replyId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         replyService.deleteReply(replyId);
         return new ResponseModel();
     }
@@ -50,6 +58,9 @@ public class ReplyController {
      **/
     @RequestMapping("/getAllByComment")
     public ResponseModel getAllInComment(int commentId){
+        if(commentId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         List<Reply> list= replyService.getAllInComment(commentId);
         return new ResponseModel(list);
     }
