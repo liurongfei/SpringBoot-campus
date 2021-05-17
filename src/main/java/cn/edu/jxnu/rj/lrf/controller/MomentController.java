@@ -35,6 +35,9 @@ public class MomentController {
      **/
     @RequestMapping("/post")
     public ResponseModel post(Moments moments){
+        if (moments ==null){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         return new ResponseModel();
     }
 
@@ -46,12 +49,14 @@ public class MomentController {
      **/
     @RequestMapping("/getAll")
     public ResponseModel getMoment(){
-
         return new ResponseModel();
     }
 
     @GetMapping("/getByUserId")
     public ResponseModel getByUserId(Integer userId){
+        if (userId <=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         List<Moments> list = momentsService.getAllByUserId(userId);
         return new ResponseModel(list);
     }

@@ -7,6 +7,7 @@ import java.util.Set;
 
 
 public interface FriendService {
+
     Set<User> getFriends(String userId);//查看某用户的好友
     Set<User> getFollows(String userId);//查询某用户的关注
     Set<User> getFollowers(String userId);//查看某用户的粉丝

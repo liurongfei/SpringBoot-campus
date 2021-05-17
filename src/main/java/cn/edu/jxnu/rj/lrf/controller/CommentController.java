@@ -32,6 +32,9 @@ public class CommentController {
      **/
     @RequestMapping("/postComment")
     public ResponseModel post(Comment comment){
+        if (comment ==null){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         commentService.post(comment);
         return new ResponseModel();
     }
@@ -57,6 +60,9 @@ public class CommentController {
      **/
     @GetMapping("getAllcomment")
     public ResponseModel getAllcomment(int momentId){
+        if (momentId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
         List<Comment> list = commentService.getAllByCommentId(momentId);
         return new ResponseModel(list);
     }
