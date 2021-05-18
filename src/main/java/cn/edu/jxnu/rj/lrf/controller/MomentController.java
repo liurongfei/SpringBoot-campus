@@ -10,6 +10,7 @@ import org.apache.tomcat.jni.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class MomentController {
      * @Param [moments]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/post")
+    @PostMapping("/post")
     public ResponseModel post(Moments moments){
         if (moments ==null){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
@@ -47,7 +48,7 @@ public class MomentController {
      * @Param []
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/getAll")
+    @GetMapping("/getAll")
     public ResponseModel getMoment(){
         return new ResponseModel();
     }
@@ -65,7 +66,7 @@ public class MomentController {
      * @Param [momentId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/deleteByMomentId")
+    @PostMapping("/deleteByMomentId")
     public ResponseModel deleteByMomentId(int momentId){
         if(momentId<=0){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
@@ -78,7 +79,7 @@ public class MomentController {
      * @Param [momentId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/findById")
+    @GetMapping("/findById")
     public ResponseModel findById(int momentId){
         if(momentId<=0){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
