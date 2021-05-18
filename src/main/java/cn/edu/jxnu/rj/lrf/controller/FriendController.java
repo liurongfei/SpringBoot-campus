@@ -8,9 +8,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -36,7 +34,7 @@ public class FriendController {
      * @Param [userId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/getFriends")
+    @RequestMapping(path = "/getFriends" ,method = RequestMethod.GET)
     public ResponseModel getFriends(String userId){
         friendService.getFriends(userId);
         return new ResponseModel();
@@ -49,7 +47,7 @@ public class FriendController {
      * @Param [userId, friendId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/getFollow")
+    @GetMapping("/getFollow")
     public ResponseModel getFollow(String userId){
         friendService.getFollows(userId);
         return new ResponseModel();
@@ -60,7 +58,7 @@ public class FriendController {
      * @Param [userId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/getFans")
+    @GetMapping("/getFans")
     public ResponseModel getFans(String userId){
         friendService.getFollowers(userId);
         return new ResponseModel();
@@ -72,7 +70,7 @@ public class FriendController {
      * @Param [userId, followId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/setFollow/{userId}")
+    @PostMapping("/setFollow/{userId}")
     //userId是被关注者
     public ResponseModel setFollow(@PathVariable("userId") String userId,String followId ){
         friendService.follow(userId,followId);
@@ -84,7 +82,7 @@ public class FriendController {
      * @Param [userId, followId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/cancelFollow/{userId}")
+    @PostMapping("/cancelFollow/{userId}")
     public ResponseModel cancelFollow(@PathVariable("userId") String userId, String followId){
         friendService.cancelFollow(userId,followId);
         return new ResponseModel();
@@ -96,7 +94,7 @@ public class FriendController {
      * @Param [userId, followerId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/removeFollowers/{followerId}")
+    @PostMapping("/removeFollowers/{followerId}")
     public ResponseModel removeFollowers(String userId,@PathVariable("followerId") String followerId){
         friendService.removeFollowers(userId,followerId);
         return new ResponseModel();
@@ -107,16 +105,16 @@ public class FriendController {
      * @Param [userId, followerId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/isFriend")
+    @GetMapping("/isFriend")
     public ResponseModel isFriend(String userId,String followerId){
-        friendService.isFriend(userId, followerId);
-        return new ResponseModel();
+        boolean is=friendService.isFriend(userId, followerId);
+        return new ResponseModel(is);
     }
 
-    @RequestMapping("/isFollow")
+    @GetMapping("/isFollow")
     public ResponseModel isFollow(String userId,String followerId){
-        friendService.isFollow(userId, followerId);
-        return new ResponseModel();
+        boolean is=friendService.isFollow(userId, followerId);
+        return new ResponseModel(is);
     }
 
 }

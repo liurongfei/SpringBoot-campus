@@ -6,6 +6,8 @@ import cn.edu.jxnu.rj.lrf.common.ResponseModel;
 import cn.edu.jxnu.rj.lrf.entity.Reply;
 import cn.edu.jxnu.rj.lrf.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +30,7 @@ public class ReplyController {
      * @Param [reply]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/replyPost")
+    @PostMapping("/replyPost")
     public ResponseModel reply(Reply reply){
         if (reply == null){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
@@ -42,7 +44,7 @@ public class ReplyController {
      * @Param [replyId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/deleteReply")
+    @PostMapping("/deleteReply")
     public ResponseModel deleteReply(int replyId){
         if(replyId<=0){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
@@ -56,7 +58,7 @@ public class ReplyController {
      * @Param [commentId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/getAllByComment")
+    @GetMapping("/getAllByComment")
     public ResponseModel getAllInComment(int commentId){
         if(commentId<=0){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
