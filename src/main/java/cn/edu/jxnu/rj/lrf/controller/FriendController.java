@@ -8,9 +8,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -31,28 +29,92 @@ public class FriendController {
     FriendService friendService;
 
 
-    @RequestMapping("/get/{id}")
-    @RequiresRoles("user")
-    public ResponseModel get(@PathVariable("id") String id){
-        Subject subject = SecurityUtils.getSubject();
-        if(subject.hasRole("user")){
-            System.out.println("当前角色是user");
-            if(subject.isPermitted("user:find")){
-                System.out.println("当前用户拥有权限：user:find");
-            }
-            if (subject.isPermitted("user:update")){
-                System.out.println("当前用户拥有权限：user:update");
-            }
-        }
-        String key = "user:"+id+":follower";
-        Set<String> members = redisTemplate.opsForSet().members(key);
-
-        return new ResponseModel(members);
-    }
-
-    @RequestMapping("/follow/{friendId}")
-    public ResponseModel follow(@PathVariable("friendId") String friendId,Integer userId){
-        friendService.follow(userId.toString(),friendId);
+    /*
+     * @Description //TODO  查看好友，通过个人的userId
+     * @Param [userId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @RequestMapping(path = "/getFriends" ,method = RequestMethod.GET)
+    public ResponseModel getFriends(String userId){
+        friendService.getFriends(userId);
         return new ResponseModel();
     }
+
+
+
+    /**
+     * @Description //TODO  查看关注者，userId是被关注的人.通过userId查看关注者
+     * @Param [userId, friendId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @GetMapping("/getFollow")
+    public ResponseModel getFollow(String userId){
+        friendService.getFollows(userId);
+        return new ResponseModel();
+    }
+
+    /**
+     * @Description //TODO 通过userId查看该用户的粉丝
+     * @Param [userId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @GetMapping("/getFans")
+    public ResponseModel getFans(String userId){
+        friendService.getFollowers(userId);
+        return new ResponseModel();
+    }
+
+
+    /**
+     * @Description //TODO  存入数据
+     * @Param [userId, followId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @PostMapping("/setFollow/{userId}")
+    //userId是被关注者
+    public ResponseModel setFollow(@PathVariable("userId") String userId,String followId ){
+        friendService.follow(userId,followId);
+        return new ResponseModel();
+    }
+
+    /**
+     * @Description //TODO  取消关注
+     * @Param [userId, followId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @PostMapping("/cancelFollow/{userId}")
+    public ResponseModel cancelFollow(@PathVariable("userId") String userId, String followId){
+        friendService.cancelFollow(userId,followId);
+        return new ResponseModel();
+    }
+
+
+    /**
+     * @Description //TODO  移除关注
+     * @Param [userId, followerId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @PostMapping("/removeFollowers/{followerId}")
+    public ResponseModel removeFollowers(String userId,@PathVariable("followerId") String followerId){
+        friendService.removeFollowers(userId,followerId);
+        return new ResponseModel();
+    }
+
+    /**
+     * @Description //TODO  判断两个用户是否还是好友
+     * @Param [userId, followerId]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
+    @GetMapping("/isFriend")
+    public ResponseModel isFriend(String userId,String followerId){
+        boolean is=friendService.isFriend(userId, followerId);
+        return new ResponseModel(is);
+    }
+
+    @GetMapping("/isFollow")
+    public ResponseModel isFollow(String userId,String followerId){
+        boolean is=friendService.isFollow(userId, followerId);
+        return new ResponseModel(is);
+    }
+
 }

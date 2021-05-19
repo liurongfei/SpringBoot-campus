@@ -8,6 +8,7 @@ import cn.edu.jxnu.rj.lrf.entity.Moments;
 import cn.edu.jxnu.rj.lrf.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class CommentController {
      * @Param [comment]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("/postComment")
+    @PostMapping("/postComment")
     public ResponseModel post(Comment comment){
         if (comment ==null){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
@@ -44,7 +45,7 @@ public class CommentController {
      * @Param [commentId]
      * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
      **/
-    @RequestMapping("deleteByCommentId")
+    @PostMapping("deleteByCommentId")
     public ResponseModel deleteByCommentId(int commentId){
         if(commentId<=0){
             throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");

@@ -28,66 +28,70 @@ public class FriendServiceImpl implements FriendService {
      * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
      **/
     @Override
-    public Set<User> getFriends(String userId) {
+    public Set<String> getFriends(String userId) {
         String key ="user:"+userId+":follow";
-        Set<User> member =redisTemplate.opsForSet().members(key);
+        String key2="user:"+userId+":follower";
+        Set<String> member= redisTemplate.opsForSet().intersect(key,key2);
         return member;
     }
+
+
+
     /**
      * @Description //TODO  查看关注
      * @Param [userId]
      * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
      **/
     @Override
-    public Set<User> getFollows(String userId) {
+    public Set<String> getFollows(String userId) {
         String key = "user:"+userId+":follow";
-        Set<User> members = redisTemplate.opsForSet().members(key);
+        Set<String> members = redisTemplate.opsForSet().members(key);
         return members;
     }
+
+
     /**
      * @Description //TODO  查看粉丝
      * @Param [userId]
      * @return java.util.Set<cn.edu.jxnu.rj.lrf.entity.User>
      **/
     @Override
-    public Set<User> getFollowers(String userId) {
-        String key = "user:"+userId+":follow";
-        Set<User> members = redisTemplate.opsForSet().members(key);
+    public Set<String> getFollowers(String userId) {
+        String key = "user:"+userId+":follower";
+        Set<String> members = redisTemplate.opsForSet().members(key);
         return members;
     }
+
 
     /**
      * @Description //TODO  存入关注信息
      * @Param [userId, friendId]
      * @return void
      **/
-
     @Override
-    public void follow(String userId, String friendId) {
-        //先查询需要关注的用户信息
-        User user = userService.findById(Integer.parseInt(friendId));
-        User user2 = userService.findById(Integer.parseInt(userId));
-
+    public void follow(String userId, String followId) {  //userId是关注人的id，followId是被关注人的id
         String key = "user:"+userId+":follow";
-        String key2 = "user"+friendId+":follower";
+        String key2 = "user"+followId+":follower";
         //将被关注用户信息存入到当前用户的关注集合中
-        redisTemplate.opsForSet().add(key,user);
+        redisTemplate.opsForSet().add(key,followId);
         //将关注者用户信息，存入到被关注者的粉丝集合中
-        redisTemplate.opsForSet().add(key2,user2);
+        redisTemplate.opsForSet().add(key2,userId);
     }
 
+
     /**
-     * @Description //TODO   用户取消关注
+     * @Description //TODO   用户userId取消关注
      * @Param [userId, followId]
      * @return void
      **/
     @Override
-    public void cancelFollow(String userId, String followId) {
-        //先查询需要取消关注的用户信息
-        User user = userService.findById(Integer.parseInt(followId));
-        User user2 = userService.findById(Integer.parseInt(userId));
-
-
+    public void cancelFollow(String userId, String followId) {//是userId用户取消
+        String key = "user:"+userId+":follow";
+        String key2 = "user"+followId+":follower";
+        //用户userId取消关注
+        redisTemplate.opsForSet().remove(key,followId);
+        //在follow删除userId信息
+        redisTemplate.opsForSet().remove(key2,userId);
     }
 
     /**
@@ -96,8 +100,13 @@ public class FriendServiceImpl implements FriendService {
      * @return void
      **/
     @Override
-    public void removeFollowers(String userId, String followerId) {
-
+    public void removeFollowers(String userId, String followerId) {  //是follwerId用户取消
+            String key = "user:"+followerId+":follow";
+            String key2 = "user"+userId+":follower";
+            //被关注者followerId移除关注者userId
+            redisTemplate.opsForSet().remove(key,userId);
+            //在userId中删除followerId中删除信息
+            redisTemplate.opsForSet().remove(key2,followerId);
     }
 
     /**
@@ -107,6 +116,13 @@ public class FriendServiceImpl implements FriendService {
      **/
     @Override
     public boolean isFriend(String userId, String friendId) {
+        String key = "user:"+userId+":follow";
+        String key2 = "user:"+friendId+":follow";
+        boolean bool=redisTemplate.opsForSet().isMember(key,friendId);
+        boolean bool1=redisTemplate.opsForSet().isMember(key2,userId);
+        if(bool==true && bool1==true){
+            return true;
+        }
         return false;
     }
 
@@ -116,8 +132,14 @@ public class FriendServiceImpl implements FriendService {
      * @return boolean
      **/
     @Override
-    public boolean isFollow(String userId, String friendId) {
-
+    public boolean isFollow(String userId, String followId) {
+        String key = "user:"+userId+":follow";
+        String key2 = "user:"+followId+":follow";
+        boolean bool=redisTemplate.opsForSet().isMember(key,followId);
+        boolean bool1=redisTemplate.opsForSet().isMember(key2,userId);
+        if(bool==true && bool1==true){
+            return true;
+        }
         return false;
     }
 }
