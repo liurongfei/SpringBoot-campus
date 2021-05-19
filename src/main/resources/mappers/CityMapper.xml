@@ -15,6 +15,11 @@
     from campus_city
     where city = #{city,jdbcType=VARCHAR}
   </select>
+  <select id="selectByCity" resultMap="BaseResultMap">
+    select p.province,c.city
+    from campus_province p,campus_city c
+    where p.pid = c.pid
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from campus_city
     where city = #{city,jdbcType=VARCHAR}
@@ -62,7 +67,7 @@
     </set>
     where city = #{city,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.City">
+  <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.City" >
     update campus_city
     set cid = #{cid,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER}
