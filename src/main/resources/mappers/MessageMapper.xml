@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="cn.edu.jxnu.rj.lrf.entity.Message">
     <id column="message_id" jdbcType="INTEGER" property="messageId" />
     <result column="message_content" jdbcType="VARCHAR" property="messageContent" />
-    <result column="send_userId" jdbcType="INTEGER" property="sendUserid" />
-    <result column="receive_userId" jdbcType="INTEGER" property="receiveUserid" />
+    <result column="send_userId" jdbcType="INTEGER" property="sendUserId" />
+    <result column="receive_userId" jdbcType="INTEGER" property="receiveUserId" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -24,8 +24,8 @@
   <insert id="insert" parameterType="cn.edu.jxnu.rj.lrf.entity.Message">
     insert into campus_message (message_id, message_content, send_userId, 
       receive_userId, gmt_create)
-    values (#{messageId,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{sendUserid,jdbcType=INTEGER}, 
-      #{receiveUserid,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP})
+    values (#{messageId,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{sendUserId,jdbcType=INTEGER},
+      #{receiveUserId,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.jxnu.rj.lrf.entity.Message">
     insert into campus_message
@@ -36,10 +36,10 @@
       <if test="messageContent != null">
         message_content,
       </if>
-      <if test="sendUserid != null">
+      <if test="sendUserId != null">
         send_userId,
       </if>
-      <if test="receiveUserid != null">
+      <if test="receiveUserId != null">
         receive_userId,
       </if>
       <if test="gmtCreate != null">
@@ -53,10 +53,10 @@
       <if test="messageContent != null">
         #{messageContent,jdbcType=VARCHAR},
       </if>
-      <if test="sendUserid != null">
+      <if test="sendUserId != null">
         #{sendUserid,jdbcType=INTEGER},
       </if>
-      <if test="receiveUserid != null">
+      <if test="receiveUserId != null">
         #{receiveUserid,jdbcType=INTEGER},
       </if>
       <if test="gmtCreate != null">
@@ -70,11 +70,11 @@
       <if test="messageContent != null">
         message_content = #{messageContent,jdbcType=VARCHAR},
       </if>
-      <if test="sendUserid != null">
-        send_userId = #{sendUserid,jdbcType=INTEGER},
+      <if test="sendUserId != null">
+        send_userId = #{sendUserId,jdbcType=INTEGER},
       </if>
-      <if test="receiveUserid != null">
-        receive_userId = #{receiveUserid,jdbcType=INTEGER},
+      <if test="receiveUserId != null">
+        receive_userId = #{receiveUserId,jdbcType=INTEGER},
       </if>
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -85,8 +85,8 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.jxnu.rj.lrf.entity.Message">
     update campus_message
     set message_content = #{messageContent,jdbcType=VARCHAR},
-      send_userId = #{sendUserid,jdbcType=INTEGER},
-      receive_userId = #{receiveUserid,jdbcType=INTEGER},
+      send_userId = #{sendUserId,jdbcType=INTEGER},
+      receive_userId = #{receiveUserId,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
     where message_id = #{messageId,jdbcType=INTEGER}
   </update>

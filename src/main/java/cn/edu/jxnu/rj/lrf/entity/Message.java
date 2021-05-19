@@ -25,13 +25,13 @@ public class Message {
      * 发送用户
      * send_userId
      */
-    private Integer sendUserid;
+    private Integer sendUserId;
 
     /**
      * 接收用户
      * receive_userId
      */
-    private Integer receiveUserid;
+    private Integer receiveUserId;
 
     /**
      * 发送时间
@@ -55,20 +55,20 @@ public class Message {
         this.messageContent = messageContent == null ? null : messageContent.trim();
     }
 
-    public Integer getSendUserid() {
-        return sendUserid;
+    public Integer getSendUserId() {
+        return sendUserId;
     }
 
-    public void setSendUserid(Integer sendUserid) {
-        this.sendUserid = sendUserid;
+    public void setSendUserId(Integer sendUserId) {
+        this.sendUserId = sendUserId;
     }
 
-    public Integer getReceiveUserid() {
-        return receiveUserid;
+    public Integer getReceiveUserId() {
+        return receiveUserId;
     }
 
-    public void setReceiveUserid(Integer receiveUserid) {
-        this.receiveUserid = receiveUserid;
+    public void setReceiveUserId(Integer receiveUserId) {
+        this.receiveUserId = receiveUserId;
     }
 
     public Date getGmtCreate() {
