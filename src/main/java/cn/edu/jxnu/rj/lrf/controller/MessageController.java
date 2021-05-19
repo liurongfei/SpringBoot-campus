@@ -8,9 +8,12 @@ import cn.edu.jxnu.rj.lrf.entity.Message;
 import cn.edu.jxnu.rj.lrf.service.MessageService;
 import cn.edu.jxnu.rj.lrf.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Classname MessageController
@@ -34,4 +37,21 @@ public class MessageController {
         return new ResponseModel();
     }
 
+    @PostMapping("/deleteMessage")
+    public ResponseModel deleteMessage(int messageId){
+        if(messageId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
+        messageService.deleteMessage(messageId);
+        return new ResponseModel();
+    }
+
+    @GetMapping("/getMessage")
+    public  ResponseModel getMessage(int sendUserId,int receiveUserId){
+        if(sendUserId<=0||receiveUserId<=0){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_ERROR.getCode(),"参数异常");
+        }
+        List<Message> list = messageService.getMessage(sendUserId,receiveUserId);
+        return new ResponseModel(list);
+    }
 }

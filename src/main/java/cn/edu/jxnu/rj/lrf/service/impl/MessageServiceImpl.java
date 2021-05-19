@@ -27,7 +27,27 @@ public class MessageServiceImpl implements MessageService {
      **/
     @Override
     public List<Message> post(Message message) {
-       messageMapper.insert(message);
+       messageMapper.insertSelective(message);
        return null;
+    }
+
+    /**
+     * @Description //TODO 删除某条聊天记录
+     * @Param [messageId]
+     * @return void
+     **/
+    @Override
+    public void deleteMessage(int messageId) {
+        messageMapper.deleteByPrimaryKey(messageId);
+    }
+
+    /**
+     * @Description //TODO 查看聊天消息
+     * @Param [sendUserId, receiveUserId]
+     * @return java.util.List<cn.edu.jxnu.rj.lrf.entity.Message>
+     **/
+    @Override
+    public List<Message> getMessage(int sendUserId, int receiveUserId) {
+        return messageMapper.getMessage(sendUserId,receiveUserId);
     }
 }

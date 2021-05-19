@@ -3,6 +3,8 @@ package cn.edu.jxnu.rj.lrf.dao;
 import cn.edu.jxnu.rj.lrf.entity.Message;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer messageId);
@@ -16,4 +18,6 @@ public interface MessageMapper {
     int updateByPrimaryKeySelective(Message record);
 
     int updateByPrimaryKey(Message record);
+
+    List<Message> getMessage(int sendUserId,int receiveUserId);
 }
