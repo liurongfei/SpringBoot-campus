@@ -28,6 +28,11 @@ public class MessageController {
     @Autowired
     MessageService messageService;
 
+    /**
+     * @Description //TODO 发送消息
+     * @Param [message]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
     @PostMapping("/messagePost")
     public ResponseModel message(Message message){
         if(message == null){
@@ -37,6 +42,11 @@ public class MessageController {
         return new ResponseModel();
     }
 
+    /**
+     * @Description //TODO 删除某条消息
+     * @Param [message]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
     @PostMapping("/deleteMessage")
     public ResponseModel deleteMessage(int messageId){
         if(messageId<=0){
@@ -46,6 +56,11 @@ public class MessageController {
         return new ResponseModel();
     }
 
+    /**
+     * @Description //TODO 查看两个的聊天消息
+     * @Param [message]
+     * @return cn.edu.jxnu.rj.lrf.common.ResponseModel
+     **/
     @GetMapping("/getMessage")
     public  ResponseModel getMessage(int sendUserId,int receiveUserId){
         if(sendUserId<=0||receiveUserId<=0){
